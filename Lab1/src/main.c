@@ -11,17 +11,17 @@ int main(){
     
     //Le as entradas e armazena nas variaveis
     printf("Digite o primeiro numero: \n");
-    scanf("%ln", &a);
+    scanf("%lf", &a);
     printf("Digite o segundo numero: \n");
-    scanf("%ln", &b);
+    scanf("%lf", &b);
 
     //Executa as funcoes
     sum_result = sum(a, b);
     subtraction_result = subtraction(a, b);
 
     //Exibe a saida
-    printf("Soma: %ln\n", sum_result);
-    printf("Subtacao: %ln\n", subtraction_result);
+    printf("Soma: %lf\n", sum_result);
+    printf("Subtacao: %lf\n", subtraction_result);
 
     return 0;
 }
