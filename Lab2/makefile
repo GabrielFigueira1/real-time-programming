@@ -2,7 +2,7 @@
 PRJ=$(shell basename $(CURDIR))
 
 # Compilador
-CC=gcc 
+CC=gcc
 
 # Lista com os arquivos .c
 SRC=$(wildcard ./src/*.c)

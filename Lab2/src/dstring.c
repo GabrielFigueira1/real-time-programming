@@ -63,7 +63,12 @@ int str_lenght(dstring str)
 
 char *str_buffer(dstring str)
 {
-
+    char *buf = malloc(sizeof(char)*str->size);
+    for(int i = 0; i<str->size; i++)
+    {
+        buf[i] = str->str[i];
+    }
+    return buf;
 }
 
 void str_print(dstring str)

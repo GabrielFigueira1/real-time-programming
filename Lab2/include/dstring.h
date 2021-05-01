@@ -1,6 +1,8 @@
 #ifndef DSTRING_H
 #define DSTRING_H
 
+#define $(s) str_buffer(s)
+
 struct dstring;
 typedef struct dstring *dstring;
 
