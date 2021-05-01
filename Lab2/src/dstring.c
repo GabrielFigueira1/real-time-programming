@@ -31,17 +31,29 @@ dstring str_new(char *str)
 
 dstring str_copy(dstring str)
 {
+    dstring copy = str_new(str->str);
 
+    return copy;
 }
 
 dstring str_concat(dstring str1, dstring str2)
 {
+    int size = str1->size + str2->size;
+    dstring new = str_copy(str1);
+    new->str = realloc(new->str, sizeof(char)*size);
 
+    new->size = size;
+    for(int i = str1->size; i<size; i++)
+    {
+        new->str[i] = str2->str[i-(str1->size)];
+    }
+
+    return new;
 }
 
 void str_free(dstring str)
 {
-
+    free(str);
 }
 
 int str_lenght(dstring str)
