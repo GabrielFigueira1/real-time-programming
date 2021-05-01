@@ -23,7 +23,6 @@ int main()
     test(item2);
 
     //Executa as funcoes
-
     sum_result = sum(a, b);
     subtraction_result = subtraction(a, b);
 
@@ -40,6 +39,6 @@ void test(int a)
     if(a == 0)
     {
         printf("Entrada invalida\n");
-        exit(0);
+        exit(1);
     }
 }
