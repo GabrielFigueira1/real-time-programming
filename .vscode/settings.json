@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "cstdlib": "cpp"
+        "cstdlib": "cpp",
+        "dstring.h": "c",
+        "stdio.h": "c",
+        "stdlib.h": "c"
     }
 }
