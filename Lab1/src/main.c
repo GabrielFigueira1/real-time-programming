@@ -36,6 +36,7 @@ int main()
 
 void test(int a)
 {
+    //Testa se o valor passado em scanf eh valido
     if(a == 0)
     {
         printf("Entrada invalida\n");
