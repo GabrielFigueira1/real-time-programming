@@ -3,6 +3,7 @@
         "cstdlib": "cpp",
         "dstring.h": "c",
         "stdio.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "typeinfo": "c"
     }
 }
