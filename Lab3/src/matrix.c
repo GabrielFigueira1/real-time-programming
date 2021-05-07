@@ -47,18 +47,18 @@ Matrix mat_ones(int a, int b, char *name)
     }
     return new_mat;
 }
-Matrix mat_identity(int a, int b, char *name)
+Matrix mat_identity(int a, char *name)
 {
     //Gera uma nova matriz de zeros
-    Matrix new_mat = mat_zeros(a, b, name);
+    Matrix new_mat = mat_zeros(a, a, name);
 
-    if (a != b)
+    if (a <= 0)
     {
-        printf("A matriz deve ser quadrada.\n");
+        printf("O numero de linhas e colunas deve ser maior que zero.\n");
         return NULL;
     }
     //Muda todos os valores da diagonal para um;
-    for (int i = 0; i < new_mat->b; i++) //colunas
+    for (int i = 0; i < new_mat->a; i++) //colunas
         new_mat->data[i][i] = 1;
 
     return new_mat;
@@ -198,6 +198,40 @@ Matrix mat_sup(Matrix mat, int a, int b, char *name)
     }
     return new_mat;
 }
+
+Matrix mat_insert()
+{
+    int a = 0;
+    int b = 0;
+    char *nome;
+
+    printf("Insira o numero de linhas da matriz\n");
+    scanf("%d", &a);
+    printf("Insira o numero de colunas da matriz\n");
+    scanf("%d", &b);
+
+    if (a <= 0 || b <= 0)
+    {
+        printf("A matriz nao foi criada. o numero de linhas ou colunas deve ser maior que zero.");
+        return NULL;
+    }
+    printf("Insira o nome da matriz\n");
+    scanf("%s", &nome);
+
+    Matrix mat = mat_zeros(a, b, nome);
+
+    for (int i = 0; i < mat->a; i++)
+    {
+        for (int j = 0; j < mat->b; j++)
+        {
+            printf("Insira o elemento da linha: %d, coluna: %d\n", i, j);
+            scanf("%lf", &mat->data[i][j]);
+        }
+    }
+    printf("Matriz criada com sucesso!\n");
+    mat_display(mat);
+    return mat;
+}
 double mat_det(Matrix mat)
 {
     if (mat->a != mat->b)
@@ -220,22 +254,17 @@ double mat_det(Matrix mat)
             return det;
             break;
         case 2:
-            det = mat->data[0][0]*mat->data[1][1]-mat->data[1][0]*mat->data[0][1];
+            det = mat->data[0][0] * mat->data[1][1] - mat->data[1][0] * mat->data[0][1];
             return det;
             break;
-        case 3: 
+        case 3:
             // Regra de Sarrus
-            det = mat->data[0][0]*mat->data[1][1]*mat->data[2][2]
-                 + mat->data[0][0]*mat->data[1][2]*mat->data[2][0]
-                 + mat->data[2][1]*mat->data[1][0]*mat->data[0][2]
-                 - mat->data[2][1]*mat->data[1][1]*mat->data[0][2]
-                 - mat->data[1][0]*mat->data[0][1]*mat->data[2][2]
-                 - mat->data[2][1]*mat->data[1][2]*mat->data[0][0];
+            det = mat->data[0][0] * mat->data[1][1] * mat->data[2][2] + mat->data[0][0] * mat->data[1][2] * mat->data[2][0] + mat->data[2][1] * mat->data[1][0] * mat->data[0][2] - mat->data[2][1] * mat->data[1][1] * mat->data[0][2] - mat->data[1][0] * mat->data[0][1] * mat->data[2][2] - mat->data[2][1] * mat->data[1][2] * mat->data[0][0];
             return det;
             break;
         default:
             // Teorema de Laplace
-            for(int i = 0; i < mat->a; i++)
+            for (int i = 0; i < mat->a; i++)
                 det += mat->data[0][i] * mat_cofactor(mat, 0, i);
             break;
             return det;

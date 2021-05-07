@@ -11,7 +11,7 @@ Matrix mat_zeros(int a, int b,char *name);
 /* Retorna uma matriz de uns de tamanho axb. */
 Matrix mat_ones(int a, int b, char *name);
 /* Retorna uma matriz identidade de tamanho axb. */
-Matrix mat_identity(int a, int b, char *name);
+Matrix mat_identity(int a, char *name);
 /* Retorna a soma de duas matrizes.
    As matrizes devem ter a mesma dimensao. */
 Matrix mat_sum(Matrix mat1, Matrix mat2, char *name);
@@ -32,6 +32,8 @@ Matrix mat_transp(Matrix mat, char *name);
 Matrix mat_inv(Matrix mat, char *name);
 /* Retorna uma matriz com a linha e a coluna escolhida removidas. */
 Matrix mat_sup(Matrix mat, int a, int b, char *name);
+/* Permite ao usuário inserir uma matriz manualmente */
+Matrix mat_insert();
 
 /* Destrutores */
 
