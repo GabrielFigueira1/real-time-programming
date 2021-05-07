@@ -168,11 +168,6 @@ Matrix mat_transp(Matrix mat, char *name)
     return new_mat;
 }
 
-Matrix mat_det(Matrix mat, char *name)
-{
-    return NULL;
-}
-
 Matrix mat_inv(Matrix mat, char *name)
 {
     return NULL;
@@ -180,12 +175,12 @@ Matrix mat_inv(Matrix mat, char *name)
 
 Matrix mat_sup(Matrix mat, int a, int b, char *name)
 {
-    if(a > mat->a-1 || b > mat->b-1)
+    if (a > mat->a - 1 || b > mat->b - 1)
     {
         printf("Os valores passados excedem os limites da matriz");
         return NULL;
     }
-    Matrix new_mat = mat_zeros(mat->a-1, mat->b-1, name);
+    Matrix new_mat = mat_zeros(mat->a - 1, mat->b - 1, name);
     int aux_a = 0, aux_b = 0;
 
     for (int i = 0; i < new_mat->a; i++) //linhas
@@ -199,54 +194,109 @@ Matrix mat_sup(Matrix mat, int a, int b, char *name)
             else
                 aux_b = 0;
             new_mat->data[i][j] = mat->data[i + aux_a][j + aux_b];
-            printf("auxa: %d auxb: %d\n",aux_a, aux_b);
         }
     }
     return new_mat;
 }
-    void mat_delete(Matrix mat)
+double mat_det(Matrix mat)
+{
+    if (mat->a != mat->b)
     {
-        for (int i = 0; i < mat->a; i++)
-        {
-            free(mat->data[i]);
-        }
-        free(mat->data);
-        free(mat);
+        printf("A matriz deve ser quadrada.");
+        exit(1);
     }
-
-    double cofactor(Matrix mat, int a, int b)
+    else if (mat->a >= 5)
     {
-        if (a > mat->a || b > mat->b)
+        printf("Esta funcao se limita ao calculo de determinante de uma matriz 4x4.");
+        exit(1);
+    }
+    else
+    {
+        double det = 0;
+        switch (mat->a)
         {
-            printf("O endereco do cofator excede o tamanho da matriz.");
-            return;
-        }
-        else if (mat->a != mat->b)
-        {
-            printf("A matriz deve ser quadrada");
-            return;
-        }
-        else
-        {
-            return;
+        case 1:
+            det = mat->data[0][0];
+            return det;
+            break;
+        case 2:
+            det = mat->data[0][0]*mat->data[1][1]-mat->data[1][0]*mat->data[0][1];
+            return det;
+            break;
+        case 3: 
+            // Regra de Sarrus
+            det = mat->data[0][0]*mat->data[1][1]*mat->data[2][2]
+                 + mat->data[0][0]*mat->data[1][2]*mat->data[2][0]
+                 + mat->data[2][1]*mat->data[1][0]*mat->data[0][2]
+                 - mat->data[2][1]*mat->data[1][1]*mat->data[0][2]
+                 - mat->data[1][0]*mat->data[0][1]*mat->data[2][2]
+                 - mat->data[2][1]*mat->data[1][2]*mat->data[0][0];
+            return det;
+            break;
+        default:
+            // Teorema de Laplace
+            for(int i = 0; i < mat->a; i++)
+                det += mat->data[0][i] * mat_cofactor(mat, 0, i);
+            break;
+            return det;
         }
     }
+}
 
-    void mat_display(Matrix mat)
+void mat_delete(Matrix mat)
+{
+    for (int i = 0; i < mat->a; i++)
     {
-        if (mat == NULL)
+        free(mat->data[i]);
+    }
+    free(mat->data);
+    free(mat);
+}
+
+double mat_cofactor(Matrix mat, int a, int b)
+{
+    if (a > mat->a || b > mat->b)
+    {
+        printf("O endereco do cofator excede o tamanho da matriz.");
+        exit(1);
+    }
+    else if (mat->a != mat->b)
+    {
+        printf("A matriz deve ser quadrada.");
+        exit(1);
+    }
+    else if (mat->a >= 5)
+    {
+        printf("Esta funcao se limita ao calculo de cofatores de uma matriz 4x4.");
+        exit(1);
+    }
+    else
+    {
+        //Encontra a menor principal
+        Matrix new_mat = mat_sup(mat, a, b, "cofactor");
+        //calcula o det
+        double det = mat_det(new_mat);
+        //retorna o cofator
+        mat_delete(new_mat);
+        return det;
+    }
+}
+
+void mat_display(Matrix mat)
+{
+    if (mat == NULL)
+    {
+        printf("Matriz nula\n");
+        return;
+    }
+    printf("%s\n", mat->name);
+    for (int i = 0; i < mat->a; i++) //linhas
+    {
+        for (int j = 0; j < mat->b; j++) //colunas
         {
-            printf("Matriz nula\n");
-            return;
+            printf("%.3lf  ", mat->data[i][j]);
         }
-        printf("%s\n", mat->name);
-        for (int i = 0; i < mat->a; i++) //linhas
-        {
-            for (int j = 0; j < mat->b; j++) //colunas
-            {
-                printf("%.3lf  ", mat->data[i][j]);
-            }
-            printf("\n");
-        }
+        printf("\n");
+    }
     printf("\n");
 }
