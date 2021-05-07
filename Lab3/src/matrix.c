@@ -3,9 +3,6 @@
 #include "matrix.h"
 
 /*
-– Soma, subtração e multiplicação de duas matrizes.
-– Soma, subtração e multiplicação de uma matriz por escalar .
-– Matriz transposta.
 – Determinante de uma matriz quadrada.
 – Inversão de uma matriz.
 */
@@ -114,7 +111,6 @@ Matrix mat_product(Matrix mat1, Matrix mat2, char *name)
     if (mat1->b == mat2->a)
     {
         Matrix new_mat = mat_zeros(mat1->a, mat2->b, name);
-        printf("%d\n", mat1->a);
         for (int i = 0; i < mat1->a; i++) //Para cada linha de mat1
         {
             for (int j = 0; j < mat2->b; j++) //Para cada coluna de mat2
@@ -133,6 +129,45 @@ Matrix mat_product(Matrix mat1, Matrix mat2, char *name)
     }
     return NULL;
 }
+
+Matrix mat_s_sum(Matrix mat, double scalar, char *name)
+{
+    Matrix new_mat = mat_zeros(mat->a, mat->b, name);
+    for (int i = 0; i < mat->a; i++) //linhas
+    {
+        for (int j = 0; j < mat->b; j++) //colunas
+        {
+            new_mat->data[i][j] = scalar + mat->data[i][j];
+        }
+    }
+    return new_mat;
+}
+Matrix mat_s_product(Matrix mat, double scalar, char *name)
+{
+    Matrix new_mat = mat_zeros(mat->a, mat->b, name);
+    for (int i = 0; i < mat->a; i++) //linhas
+    {
+        for (int j = 0; j < mat->b; j++) //colunas
+        {
+            new_mat->data[i][j] = scalar * mat->data[i][j];
+        }
+    }
+    return new_mat;
+}
+
+Matrix mat_transp(Matrix mat, char *name)
+{
+    Matrix new_mat = mat_zeros(mat->b, mat->a, name);
+    for (int i = 0; i < mat->a; i++) //linhas
+    {
+        for (int j = 0; j < mat->b; j++) //colunas
+        {
+            new_mat->data[j][i] = mat->data[i][j];
+        }
+    }
+    return new_mat;
+}
+
 void mat_delete(Matrix mat)
 {
     for (int i = 0; i < mat->a; i++)
