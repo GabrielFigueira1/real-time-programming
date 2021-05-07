@@ -170,7 +170,24 @@ Matrix mat_transp(Matrix mat, char *name)
 
 Matrix mat_inv(Matrix mat, char *name)
 {
-    return NULL;
+    double det = mat_det(mat);
+    if (det == 0)
+    {
+        printf("A inversa nao existe, o determinate e igual a zero");
+        return NULL;
+    }
+    Matrix new_mat = mat_adj(mat);
+    new_mat->name = name;
+
+    for (int i = 0; i < mat->a; i++) //linhas
+    {
+        for (int j = 0; j < mat->b; j++) //colunas
+        {
+            new_mat->data[i][j] = new_mat->data[i][j] / det;
+        }
+    }
+
+    return new_mat;
 }
 
 Matrix mat_sup(Matrix mat, int a, int b, char *name)
@@ -232,6 +249,29 @@ Matrix mat_insert()
     mat_display(mat);
     return mat;
 }
+
+Matrix mat_cof(Matrix mat)
+{
+    Matrix new_mat = mat_zeros(mat->a, mat->b, mat->name);
+
+    for (int i = 0; i < mat->a; i++)
+    {
+        for (int j = 0; j < mat->b; j++)
+        {
+            new_mat->data[i][j] = mat_cofactor(mat, i, j);
+        }
+    }
+
+    return new_mat;
+}
+
+Matrix mat_adj(Matrix mat)
+{
+    Matrix new_mat = mat_transp(mat_cof(mat), mat->name);
+    return new_mat;
+}
+
+
 double mat_det(Matrix mat)
 {
     if (mat->a != mat->b)

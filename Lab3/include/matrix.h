@@ -34,6 +34,10 @@ Matrix mat_inv(Matrix mat, char *name);
 Matrix mat_sup(Matrix mat, int a, int b, char *name);
 /* Permite ao usuário inserir uma matriz manualmente */
 Matrix mat_insert();
+/* Retorna a matriz dos cofatores */
+Matrix mat_cof(Matrix mat);
+/* Retorna a matriz adjunta */
+Matrix mat_adj(Matrix mat);
 
 /* Destrutores */
 
