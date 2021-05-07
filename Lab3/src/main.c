@@ -13,7 +13,7 @@ int main(){
     Matrix test_scalar_product = mat_s_product(mat_test, 10, "teste produto escalar");
     Matrix test_scalar_sum = mat_s_sum(mat_iden, -1, "teste soma escalar");
     Matrix tranp = mat_transp(test_scalar_product, "transposta");
-
+    Matrix removed = mat_sup(mat_iden, 0, 0, "Sup");
     /*mat_display(mat_0);
     mat_display(mat_1);
     mat_display(mat_iden);
@@ -27,5 +27,6 @@ int main(){
     mat_display(test_scalar_product);
 
     mat_display(tranp);
+    mat_display(removed);
     return 0;
 }

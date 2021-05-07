@@ -172,28 +172,74 @@ Matrix mat_det(Matrix mat, char *name)
 {
     return NULL;
 }
+
 Matrix mat_inv(Matrix mat, char *name)
 {
     return NULL;
 }
 
-void mat_delete(Matrix mat)
+Matrix mat_sup(Matrix mat, int a, int b, char *name)
 {
-    for (int i = 0; i < mat->a; i++)
+    if(a > mat->a-1 || b > mat->b-1)
     {
-        free(mat->data[i]);
+        printf("Os valores passados excedem os limites da matriz");
+        return NULL;
     }
-    free(mat->data);
-    free(mat);
+    Matrix new_mat = mat_zeros(mat->a-1, mat->b-1, name);
+    int aux_a = 0, aux_b = 0;
+
+    for (int i = 0; i < new_mat->a; i++) //linhas
+    {
+        if (i == a)
+            aux_a = 1;
+        for (int j = 0; j < new_mat->b; j++) //colunas
+        {
+            if (j >= b)
+                aux_b = 1;
+            else
+                aux_b = 0;
+            new_mat->data[i][j] = mat->data[i + aux_a][j + aux_b];
+            printf("auxa: %d auxb: %d\n",aux_a, aux_b);
+        }
+    }
+    return new_mat;
 }
-void mat_display(Matrix mat)
-{
-    if (mat == NULL)
+    void mat_delete(Matrix mat)
     {
-        printf("Matriz nula\n");
-        return;
+        for (int i = 0; i < mat->a; i++)
+        {
+            free(mat->data[i]);
+        }
+        free(mat->data);
+        free(mat);
     }
-    printf("%s\n", mat->name);
+
+    double cofactor(Matrix mat, int a, int b)
+    {
+        if (a > mat->a || b > mat->b)
+        {
+            printf("O endereco do cofator excede o tamanho da matriz.");
+            return;
+        }
+        else if (mat->a != mat->b)
+        {
+            printf("A matriz deve ser quadrada");
+            return;
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    void mat_display(Matrix mat)
+    {
+        if (mat == NULL)
+        {
+            printf("Matriz nula\n");
+            return;
+        }
+        printf("%s\n", mat->name);
         for (int i = 0; i < mat->a; i++) //linhas
         {
             for (int j = 0; j < mat->b; j++) //colunas

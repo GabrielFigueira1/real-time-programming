@@ -32,6 +32,8 @@ Matrix mat_transp(Matrix mat, char *name);
 Matrix mat_det(Matrix mat, char *name);
 /* Retorna a inversa da matriz. */
 Matrix mat_inv(Matrix mat, char *name);
+/* Retorna uma matriz com a linha e a coluna escolhida removidas. */
+Matrix mat_sup(Matrix mat, int a, int b, char *name);
 
 /* Destrutores */
 
@@ -40,6 +42,8 @@ void mat_delete(Matrix mat);
 
 /* Outros */
 
+/* Retorna o cofator associado ao elemento ab da matriz. */
+double cofactor(Matrix mat, int a, int b);
 /* Imprime a matriz no terminal. */
 void mat_display(Matrix mat);
 
