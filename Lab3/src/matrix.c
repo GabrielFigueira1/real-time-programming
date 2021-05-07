@@ -168,6 +168,15 @@ Matrix mat_transp(Matrix mat, char *name)
     return new_mat;
 }
 
+Matrix mat_det(Matrix mat, char *name)
+{
+    return NULL;
+}
+Matrix mat_inv(Matrix mat, char *name)
+{
+    return NULL;
+}
+
 void mat_delete(Matrix mat)
 {
     for (int i = 0; i < mat->a; i++)
@@ -185,7 +194,6 @@ void mat_display(Matrix mat)
         return;
     }
     printf("%s\n", mat->name);
-    {
         for (int i = 0; i < mat->a; i++) //linhas
         {
             for (int j = 0; j < mat->b; j++) //colunas
@@ -194,5 +202,5 @@ void mat_display(Matrix mat)
             }
             printf("\n");
         }
-    }
+    printf("\n");
 }
