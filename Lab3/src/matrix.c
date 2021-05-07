@@ -3,14 +3,13 @@
 #include "matrix.h"
 
 /*
-– Definição (tipo) da ADT (Matrix).
-– Criação de matrizes.
 – Soma, subtração e multiplicação de duas matrizes.
 – Soma, subtração e multiplicação de uma matriz por escalar .
 – Matriz transposta.
 – Determinante de uma matriz quadrada.
 – Inversão de uma matriz.
 */
+
 struct Matrix
 {
     int a, b;
@@ -42,9 +41,9 @@ Matrix mat_ones(int a, int b, char *name)
     Matrix new_mat = mat_zeros(a, b, name);
 
     //Muda todos os valores para um;
-    for (int i = 0; i < new_mat->b; i++) //colunas
+    for (int i = 0; i < new_mat->a; i++) //linhas
     {
-        for (int j = 0; j < new_mat->a; j++) //linhas
+        for (int j = 0; j < new_mat->b; j++) //colunas
         {
             new_mat->data[i][j] = 1;
         }
@@ -67,6 +66,73 @@ Matrix mat_identity(int a, int b, char *name)
 
     return new_mat;
 }
+Matrix mat_sum(Matrix mat1, Matrix mat2, char *name)
+{
+    //Verifica se as matrizes possum o mesmo numero de linhas e colunas
+    if (mat1->a == mat2->a && mat1->b == mat2->b)
+    {
+        Matrix new_mat = mat_zeros(mat1->a, mat1->b, name);
+        for (int i = 0; i < new_mat->a; i++) //linhas
+        {
+            for (int j = 0; j < new_mat->b; j++) //colunas
+            {
+                new_mat->data[i][j] = mat1->data[i][j] + mat2->data[i][j];
+            }
+        }
+        return new_mat;
+    }
+    else
+    {
+        (printf("As matrizes devem possuir a mesma ordem\n"));
+        return NULL;
+    }
+}
+Matrix mat_difference(Matrix mat1, Matrix mat2, char *name)
+{
+    //Verifica se as matrizes possum o mesmo numero de linhas e colunas
+    if (mat1->a == mat2->a && mat1->b == mat2->b)
+    {
+        Matrix new_mat = mat_zeros(mat1->a, mat1->b, name);
+        for (int i = 0; i < new_mat->a; i++) //linhas
+        {
+            for (int j = 0; j < new_mat->b; j++) //colunas
+            {
+                new_mat->data[i][j] = mat1->data[i][j] - mat2->data[i][j];
+            }
+        }
+        return new_mat;
+    }
+    else
+    {
+        (printf("As matrizes devem possuir a mesma ordem\n"));
+        return NULL;
+    }
+}
+Matrix mat_product(Matrix mat1, Matrix mat2, char *name)
+{
+    //Testa se e possivel realizar o produto
+    if (mat1->b == mat2->a)
+    {
+        Matrix new_mat = mat_zeros(mat1->a, mat2->b, name);
+        printf("%d\n", mat1->a);
+        for (int i = 0; i < mat1->a; i++) //Para cada linha de mat1
+        {
+            for (int j = 0; j < mat2->b; j++) //Para cada coluna de mat2
+            {
+                for (int k = 0; k < mat2->a; k++)
+                {
+                    new_mat->data[i][j] += mat1->data[i][k] * mat2->data[k][j];
+                }
+            }
+        }
+        return new_mat;
+    }
+    else
+    {
+        printf("O numero de colunas da primeira matrix deve ser igual ao numero de linhas da segunda matriz\n");
+    }
+    return NULL;
+}
 void mat_delete(Matrix mat)
 {
     for (int i = 0; i < mat->a; i++)
@@ -78,17 +144,16 @@ void mat_delete(Matrix mat)
 }
 void mat_display(Matrix mat)
 {
-
     if (mat == NULL)
     {
         printf("Matriz nula\n");
+        return;
     }
-    else
-        printf("%s\n", mat->name);
+    printf("%s\n", mat->name);
     {
-        for (int i = 0; i < mat->b; i++) //colunas
+        for (int i = 0; i < mat->a; i++) //linhas
         {
-            for (int j = 0; j < mat->a; j++) //linhas
+            for (int j = 0; j < mat->b; j++) //colunas
             {
                 printf("%.3lf  ", mat->data[i][j]);
             }
