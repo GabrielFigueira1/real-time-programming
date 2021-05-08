@@ -2,11 +2,6 @@
 #include <stdio.h>
 #include "matrix.h"
 
-/*
-– Determinante de uma matriz quadrada.
-– Inversão de uma matriz.
-*/
-
 struct Matrix
 {
     int a, b;
@@ -198,6 +193,9 @@ Matrix mat_sup(Matrix mat, int a, int b, char *name)
         return NULL;
     }
     Matrix new_mat = mat_zeros(mat->a - 1, mat->b - 1, name);
+    // aux_a e aux_b sao triggers que acionam quando o contador passa pela
+    // linha ou coluna a ser removida
+    // Eles acrescentam em um o contador, removendo uma linha ou coluna
     int aux_a = 0, aux_b = 0;
 
     for (int i = 0; i < new_mat->a; i++) //linhas
