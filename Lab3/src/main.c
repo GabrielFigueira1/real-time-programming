@@ -1,7 +1,8 @@
 #include<stdio.h>
+#include<stdlib.h>
 #include "matrix.h"
 
-typedef enum options
+enum options
 {
     EXIT_PROGRAMN,
     INSERT_M1,
@@ -23,21 +24,22 @@ typedef enum options
     CALC_MAT_ADJ,
     SHOW_M1,
     SHOW_M2
-} option; 
+}; 
 
-option menu_option;
+int menu_option;
 void open_menu();
 
 /* Funcoes que pedem para o usuario inserir um dado atraves de scanf */
 int get_a_input();
 int get_b_input();
 char *get_name_input();
-int get_scalar_input();
+double get_scalar_input();
 
 int main(){
     // Matrizes usadas para a execucao de testes do programa
-    Matrix M1;
-    Matrix M2;
+    Matrix M1 = NULL;
+    Matrix M2 = NULL;
+    int a, b;
     while (1)
     {
         open_menu();
@@ -48,53 +50,65 @@ int main(){
             break;
         case INSERT_M1:
             M1 = mat_insert();
+            mat_display(M1);
         break;
         case INSERT_M2:
             M2 = mat_insert();
+            mat_display(M2);
         break;
         case CREATE_MAT_ZEROS:
             M2 = mat_zeros(get_a_input(), get_b_input(), get_name_input());
+            mat_display(M2);
         break;
         case CREATE_MAT_ONES:
             M2 = mat_ones(get_a_input(), get_b_input(), get_name_input());
+            mat_display(M2);
         break;
         case CREATE_MAT_IDENTITY:
             M2 = mat_identity(get_a_input(), get_name_input());
+            mat_display(M2);
         break;
         case DO_SUM:
             M2 = mat_sum(M1, M2, get_name_input());
+            mat_display(M2);
         break;
         case DO_DIFFERENCE:
             M2 = mat_difference(M1, M2, get_name_input());
+            mat_display(M2);
         break;
         case DO_PRODUCT:
             M2 = mat_product(M1, M2, get_name_input());
+            mat_display(M2);
         break;
         case DO_S_SUM:
             M2 = mat_s_sum(M1, get_scalar_input(), get_name_input());
+            mat_display(M2);
         break;
         case DO_S_PRODUCT:
             M2 = mat_s_product(M1, get_scalar_input(), get_name_input());
+            mat_display(M2);
         break;
         case TRANSP:
             M2 = mat_transp(M1, get_name_input());
+            mat_display(M2);
         break;
         case INVERSE:
-            M2 = mat_inv(M1, get_name_input()); 
+            M2 = mat_inv(M1, get_name_input());
+            mat_display(M2);
         break;
         case REMOVE_LINE_COL:
-            int a, b;
             printf("Insira a linha a ser removida: ");
             scanf("%d", &a);
             printf("Insira a coluna a ser removida: ");
             scanf("%d", &b);
             M2 = mat_sup(M1, a, b, get_name_input());
+            mat_display(M2);
         break;
         case CALC_DET:
             printf("Determinante de M1: %lf\n", mat_det(M1));
+            mat_display(M2);
         break;
         case CALC_COF:
-            int a, b;
             printf("Insira a linha e a coluna.\n Linha: ");
             scanf("%d", &a);
             printf("Coluna: ");
@@ -120,21 +134,6 @@ int main(){
         }
     }
 }
-int select_mat()
-{
-    int sel();
-    printf("Selecione onde deseja salvar a nova matriz\n");
-    printf("1. M1\n");
-    printf("2. M2\n");
-    scanf("%d", &sel);
-    if(sel == 1)
-        return 1;
-    else if (sel == 2)
-        return 2;
-    else
-        printf("Opcao invalida.\n");
-    exit(1);
-}
 
 int get_a_input()
 {
@@ -146,7 +145,7 @@ int get_a_input()
 int get_b_input()
 {
     int b;
-    printf("Insira a quantidade de linhas: ");
+    printf("Insira a quantidade de colunas: ");
     scanf("%d", &b);
     return b;
 }
@@ -157,17 +156,17 @@ char *get_name_input()
     scanf("%s", name);
     return name;
 }
-int get_scalar_input()
+double get_scalar_input()
 {
-    int s;
+    double s;
     printf("Insira o escalar: ");
-    scanf("%d", &s);
+    scanf("%lf", &s);
     return s;
 }
 
 void open_menu()
 {
-    printf("Digite o numero da opcao desejada\n");
+    printf("\nDigite o numero da opcao desejada\n");
     printf("1. Inserir uma matriz m1\n");
     printf("2. Inserir uma matriz m2\n");
     printf("3. Criar matriz de zeros\n");
@@ -179,12 +178,14 @@ void open_menu()
     printf("9. Soma por escalar\n");
     printf("10. Multiplicação por escalar\n");
     printf("11. Transposta\n");
-    printf("12. Inversa\n\n");
+    printf("12. Inversa\n");
     printf("13. Remover uma linha e coluna\n");
     printf("14. Determinante\n");
     printf("15. Cofator\n");
     printf("16. Matriz de cofatores\n");
     printf("17. Adjunta\n");
+    printf("18. Exibir a matriz M1\n");
+    printf("19. Exibir a matriz M2\n");
     printf("0. Encerrar programa\n\n");
 
     printf("Opcao: ");

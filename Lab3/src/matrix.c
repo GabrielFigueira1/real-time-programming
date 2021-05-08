@@ -173,7 +173,7 @@ Matrix mat_inv(Matrix mat, char *name)
     double det = mat_det(mat);
     if (det == 0)
     {
-        printf("A inversa nao existe, o determinate e igual a zero");
+        printf("A inversa nao existe, o determinate e igual a zero\n");
         return NULL;
     }
     Matrix new_mat = mat_adj(mat);
@@ -194,7 +194,7 @@ Matrix mat_sup(Matrix mat, int a, int b, char *name)
 {
     if (a > mat->a - 1 || b > mat->b - 1)
     {
-        printf("Os valores passados excedem os limites da matriz");
+        printf("Os valores passados excedem os limites da matriz\n");
         return NULL;
     }
     Matrix new_mat = mat_zeros(mat->a - 1, mat->b - 1, name);
@@ -220,22 +220,22 @@ Matrix mat_insert()
 {
     int a = 0;
     int b = 0;
-    char *nome;
+    char *name = malloc(sizeof(char));
 
     printf("Insira o numero de linhas da matriz\n");
     scanf("%d", &a);
     printf("Insira o numero de colunas da matriz\n");
     scanf("%d", &b);
+    printf("Insira o nome da matriz\n");
+    scanf("%s", name);
 
     if (a <= 0 || b <= 0)
     {
-        printf("A matriz nao foi criada. o numero de linhas ou colunas deve ser maior que zero.");
+        printf("A matriz nao foi criada. o numero de linhas ou colunas deve ser maior que zero.\n");
         return NULL;
     }
-    printf("Insira o nome da matriz\n");
-    scanf("%s", &nome);
 
-    Matrix mat = mat_zeros(a, b, nome);
+    Matrix mat = mat_zeros(a, b, name);
 
     for (int i = 0; i < mat->a; i++)
     {
@@ -246,7 +246,7 @@ Matrix mat_insert()
         }
     }
     printf("Matriz criada com sucesso!\n");
-    mat_display(mat);
+    //mat_display(mat);
     return mat;
 }
 
@@ -271,17 +271,16 @@ Matrix mat_adj(Matrix mat)
     return new_mat;
 }
 
-
 double mat_det(Matrix mat)
 {
     if (mat->a != mat->b)
     {
-        printf("A matriz deve ser quadrada.");
+        printf("A matriz deve ser quadrada.\n");
         exit(1);
     }
     else if (mat->a >= 5)
     {
-        printf("Esta funcao se limita ao calculo de determinante de uma matriz 4x4.");
+        printf("Esta funcao se limita ao calculo de determinante de uma matriz 4x4.\n");
         exit(1);
     }
     else
@@ -299,7 +298,12 @@ double mat_det(Matrix mat)
             break;
         case 3:
             // Regra de Sarrus
-            det = mat->data[0][0] * mat->data[1][1] * mat->data[2][2] + mat->data[0][0] * mat->data[1][2] * mat->data[2][0] + mat->data[2][1] * mat->data[1][0] * mat->data[0][2] - mat->data[2][1] * mat->data[1][1] * mat->data[0][2] - mat->data[1][0] * mat->data[0][1] * mat->data[2][2] - mat->data[2][1] * mat->data[1][2] * mat->data[0][0];
+            det = mat->data[0][0] * mat->data[1][1] * mat->data[2][2] 
+                + mat->data[0][1] * mat->data[1][2] * mat->data[2][0]
+                + mat->data[2][1] * mat->data[1][0] * mat->data[0][2] 
+                - mat->data[2][0] * mat->data[1][1] * mat->data[0][2] 
+                - mat->data[1][0] * mat->data[0][1] * mat->data[2][2] 
+                - mat->data[2][1] * mat->data[1][2] * mat->data[0][0];
             return det;
             break;
         default:
@@ -326,25 +330,27 @@ double mat_cofactor(Matrix mat, int a, int b)
 {
     if (a > mat->a || b > mat->b)
     {
-        printf("O endereco do cofator excede o tamanho da matriz.");
+        printf("O endereco do cofator excede o tamanho da matriz.\n");
         exit(1);
     }
     else if (mat->a != mat->b)
     {
-        printf("A matriz deve ser quadrada.");
+        printf("A matriz deve ser quadrada.\n");
         exit(1);
     }
     else if (mat->a >= 5)
     {
-        printf("Esta funcao se limita ao calculo de cofatores de uma matriz 4x4.");
+        printf("Esta funcao se limita ao calculo de cofatores de uma matriz 4x4.\n");
         exit(1);
     }
     else
     {
         //Encontra a menor principal
-        Matrix new_mat = mat_sup(mat, a, b, "cofactor");
+        Matrix new_mat = mat_sup(mat, a, b, "cofactor\n");
         //calcula o det
         double det = mat_det(new_mat);
+        if ((a + b) % 2 != 0) //Multiplica por -1 os valores onde a+b forem impares
+            det = -det;
         //retorna o cofator
         mat_delete(new_mat);
         return det;
