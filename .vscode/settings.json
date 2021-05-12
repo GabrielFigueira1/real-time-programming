@@ -4,6 +4,8 @@
         "dstring.h": "c",
         "stdio.h": "c",
         "stdlib.h": "c",
-        "typeinfo": "c"
+        "typeinfo": "c",
+        "integral.h": "c",
+        "stdarg.h": "c"
     }
 }
