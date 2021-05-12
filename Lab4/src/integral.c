@@ -1,6 +1,6 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
 #include "integral.h"
 
 struct D_fun
@@ -22,7 +22,6 @@ D_fun create_fun(double *fun, int num_points, double timestep, char *name)
     for (int i = 0; i < num_points; i++)
     {
         new_fun->fx[i] = fun[i];
-        
     }
 
     return new_fun;
@@ -34,7 +33,8 @@ double *double2array(int num_points, ...)
     va_list ap;
     va_start(ap, num_points);
 
-    for(int i=0; i<num_points;i++){
+    for (int i = 0; i < num_points; i++)
+    {
         d[i] = va_arg(ap, double);
     }
 
@@ -43,24 +43,27 @@ double *double2array(int num_points, ...)
 
 double integral(D_fun fun, unsigned int start, unsigned int end)
 {
-    if(start >= end){
+    if (start >= end)
+    {
         printf("Intervalo invalido.\n");
         return 0;
     }
-    else if(start >= fun->num_points){
-        printf("start deve ser menor que o numero de amostras da funcao.\n");
+    else if (start >= fun->num_points - 1)
+    {
+        printf("start deve ser menor que o numero de amostras da funcao menos um.\n");
         return 0;
     }
-    else if(end > fun->num_points){
-        printf("end deve ser menor ou igual que o numero de amostras da funcao.\n");
+    else if (end > fun->num_points - 1)
+    {
+        printf("end deve ser menor ou igual que o numero de amostras da funcao menos um.\n");
         return 0;
     }
     double total = 0;
-    
+
     for (int i = start; i < end; i++)
     {
-        total += (fun->fx[i]+fun->fx[i+1])/2 * fun->timestep;   //area do trapezio
+        total += (fun->fx[i] + fun->fx[i + 1]) / 2 * fun->timestep; //area do trapezio
     }
 
-    return total;    
+    return total;
 }
