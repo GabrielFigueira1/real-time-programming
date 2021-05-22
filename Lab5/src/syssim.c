@@ -75,10 +75,7 @@ Matrix *create_x(Matrix *xdot, double *time)
             {
                 x[j] = mat_zeros(xdot[0]->a, xdot[0]->b, "x"); //Mesmas dimensoes de xdot
             }
-            for (int k = 0; time[k - 1] <= 20; k++)
-            {
-                temp_fun[k] = xdot[k]->data[i][0]; //Armazena os valores da x em uma double
-            }
+            temp_fun[j] = xdot[j]->data[i][0]; //Armazena os valores da x em uma double
             D_fun f = create_fun(temp_fun, sampling_points + 1, timestep, "temp");
             x[j]->data[i][0] = integral(f, 0, j);
         }
