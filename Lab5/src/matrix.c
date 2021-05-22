@@ -2,12 +2,7 @@
 #include <stdio.h>
 #include "matrix.h"
 
-struct Matrix
-{
-    int a, b;
-    double **data;
-    char *name;
-};
+
 
 Matrix mat_zeros(int a, int b, char *name)
 {

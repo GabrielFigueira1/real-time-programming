@@ -17,13 +17,13 @@ OBJ=$(subst .c,.o,$(subst src,objects,$(SRC)))
 all: $(PRJ)
 
 $(PRJ): $(OBJ)
-	$(CC) $^ -o $@
+	$(CC) $^ -o $@ -lm
 
 ./objects/%.o: ./src/%.c ./include/%.h
-	$(CC) -c -Wall -Iinclude $< -o $@
+	$(CC) -c -Wall -Iinclude $< -o $@ 
 	
 ./objects/main.o: ./src/main.c $(INCLUDE)
-	$(CC) -c -Wall -Iinclude $< -o $@
+	$(CC) -c -Wall -Iinclude $< -o $@  
 
 # Remover arquivos .o
 clean:
