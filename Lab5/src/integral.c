@@ -45,7 +45,6 @@ double integral(D_fun fun, unsigned int start, unsigned int end)
 {
     if (start >= end)
     {
-        printf("Intervalo invalido.\n");
         return 0;
     }
     else if (start >= fun->num_points - 1)
