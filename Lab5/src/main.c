@@ -10,8 +10,9 @@ int main()
     double *t = generate_time(0.1, 20);
     Matrix *u = create_u(t);
     Matrix *xdot = create_xdot(u, t);
+    Matrix *x = create_x(xdot, t);
 
-    for(int i = 0; i <=200; i++)
-        //printf("%lf\n", u[i]);
+    write_data(t, u, x);    
+
     return 0;
 }
