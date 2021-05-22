@@ -45,7 +45,6 @@ Matrix mat_cof(Matrix mat);
 /* Retorna a matriz adjunta */
 Matrix mat_adj(Matrix mat);
 
-Matrix mat_u();
 /* Destrutores */
 
 /* Destroi a matriz. */

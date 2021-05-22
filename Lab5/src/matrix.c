@@ -2,8 +2,6 @@
 #include <stdio.h>
 #include "matrix.h"
 
-
-
 Matrix mat_zeros(int a, int b, char *name)
 {
     Matrix new_mat = malloc(sizeof(Matrix));
