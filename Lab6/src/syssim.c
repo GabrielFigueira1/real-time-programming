@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <pthread.h>
 
 double *generate_time(double timestep, double range)
 {
@@ -26,6 +27,121 @@ Matrix create_u(int i)
 
     return u;
 }
+
+
+void write_data(double *time, Matrix *u, Matrix *x)
+{
+    char filename[] = "data";
+    FILE *fp = fopen(filename, "w");
+    if (fp)
+    {
+        fprintf(fp, "t  u1  u2    xc   yc    teta\n");
+        for (int i = 0; time[i - 1] <= 20; i++)
+        {
+            fprintf(fp, "%.3lf  %.3lf    %.3lf   %.3lf    %.3lf   %.3lf\n",
+                                            time[i],
+                                            u[i]->data[0][0],
+                                            u[i]->data[1][0],
+                                            x[i]->data[0][0],
+                                            x[i]->data[1][0],
+                                            x[i]->data[2][0]
+                                            );
+        }
+    }
+}
+
+pthread_mutex_t msglock = PTHREAD_MUTEX_INITIALIZER;
+
+void *ut(){
+
+}
+void *yt(){
+
+}
+//duas theads tu ty
+//rodam funcoes ut yt
+void run_multithread_simulation(){
+    //paremetros
+    double range = 20;
+    double timestep = 0.1;
+    double sampling_points = range / timestep;
+
+    double *t = generate_time(timestep, range);
+
+    //Primeira matriz do produto de matrizes xdot
+    Matrix xdot_a = mat_zeros(3, 2, "xdot_1");
+
+    //Matrix xdot
+    Matrix xdot = mat_zeros(3, 1, "xdot");
+
+    Matrix x = mat_zeros(3,1, "x");
+
+    //Armazena as linhas de xdot em double
+    //Necessario para integracao
+    double *xdot0_fun = malloc(sizeof(double) * sampling_points);
+    double *xdot1_fun = malloc(sizeof(double) * sampling_points);
+    double *xdot2_fun = malloc(sizeof(double) * sampling_points);
+
+
+}
+void run_simulation()
+{   //paremetros
+    double range = 20;
+    double timestep = 0.1;
+    double sampling_points = range / timestep;
+
+    double *t = generate_time(timestep, range);
+
+    //Primeira matriz do produto de matrizes xdot
+    Matrix xdot_a = mat_zeros(3, 2, "xdot_1");
+
+    //Matrix xdot
+    Matrix xdot = mat_zeros(3, 1, "xdot");
+
+    Matrix x = mat_zeros(3,1, "x");
+
+    //Armazena as linhas de xdot
+    double *xdot0_fun = malloc(sizeof(double) * sampling_points);
+    double *xdot1_fun = malloc(sizeof(double) * sampling_points);
+    double *xdot2_fun = malloc(sizeof(double) * sampling_points);
+
+    for (int i = 0; t[i - 1] <= 20; i++)
+    {
+        //Encontra xdot
+        Matrix u = create_u(i);
+        xdot_a->data[0][0] = sin(x->data[2][0]);
+        xdot_a->data[1][0] = cos(x->data[2][0]);
+        xdot_a->data[2][1] = 1;
+        
+        xdot = mat_product(xdot_a, u, "xdot");
+        
+        //Armazena xdot em doubles para a integracao 
+        xdot0_fun[i] = xdot->data[0][0];
+        xdot1_fun[i] = xdot->data[1][0];
+        xdot2_fun[i] = xdot->data[2][0];
+
+        //integral
+        D_fun xdot0_f = create_fun(xdot0_fun, i+1, timestep, "xdot");
+        D_fun xdot1_f = create_fun(xdot1_fun, i+1, timestep, "xdot");
+        D_fun xdot2_f = create_fun(xdot2_fun, i+1, timestep, "xdot");
+
+        x->data[0][0] = integral(xdot0_f, 0, i);
+        x->data[1][0] = integral(xdot1_f, 0, i);
+        x->data[2][0] = integral(xdot2_f, 0, i);
+
+        //y(t) = I*x(t) = x(t)
+        printf("%.3lf  %.3lf    %.3lf   %.3lf    %.3lf   %.3lf\n",
+                                            t[i],
+                                            u->data[0][0],
+                                            u->data[1][0],
+                                            x->data[0][0],
+                                            x->data[1][0],
+                                            x->data[2][0]
+                                            );
+    }
+}
+
+//Funcoes descontinuadas
 
 Matrix *create_xdot(Matrix *u, double *time)
 {
@@ -75,82 +191,4 @@ Matrix *create_x(Matrix *xdot, double *time)
     }
     */
     return x;
-}
-
-void write_data(double *time, Matrix *u, Matrix *x)
-{
-    char filename[] = "data";
-    FILE *fp = fopen(filename, "w");
-    if (fp)
-    {
-        fprintf(fp, "t  u1  u2    xc   yc    teta\n");
-        for (int i = 0; time[i - 1] <= 20; i++)
-        {
-            fprintf(fp, "%.3lf  %.3lf    %.3lf   %.3lf    %.3lf   %.3lf\n",
-                                            time[i],
-                                            u[i]->data[0][0],
-                                            u[i]->data[1][0],
-                                            x[i]->data[0][0],
-                                            x[i]->data[1][0],
-                                            x[i]->data[2][0]
-                                            );
-        }
-    }
-}
-
-void run_simulation()
-{   //paremetros
-    double range = 20;
-    double timestep = 0.1;
-    double sampling_points = range / timestep;
-
-    double *t = generate_time(timestep, range);
-    /*Matrix *xdot = create_xdot(u, t);
-    Matrix *x = create_x(xdot, t);*/
-
-    Matrix xdot_a = mat_zeros(3, 2, "xdot_1");
-    Matrix xdot = mat_zeros(3, 1, "xdot");
-
-    Matrix x = mat_zeros(3,1, "x");
-
-    //Armazena as linhas de xdot
-    double *xdot0_fun = malloc(sizeof(double) * sampling_points);
-    double *xdot1_fun = malloc(sizeof(double) * sampling_points);
-    double *xdot2_fun = malloc(sizeof(double) * sampling_points);
-
-    for (int i = 0; t[i - 1] <= 20; i++)
-    {
-        //COLOCAR u(t) AQUI
-        //Encontra xdot
-        Matrix u = create_u(i);
-        xdot_a->data[0][0] = sin(x->data[2][0]);
-        xdot_a->data[1][0] = cos(x->data[2][0]);
-        xdot_a->data[2][1] = 1;
-        
-        xdot = mat_product(xdot_a, u, "xdot");
-        
-        //Armazena xdot em doubles para a integracao 
-        xdot0_fun[i] = xdot->data[0][0];
-        xdot1_fun[i] = xdot->data[1][0];
-        xdot2_fun[i] = xdot->data[2][0];
-
-        //integral
-        D_fun xdot0_f = create_fun(xdot0_fun, i+1, timestep, "xdot");
-        D_fun xdot1_f = create_fun(xdot1_fun, i+1, timestep, "xdot");
-        D_fun xdot2_f = create_fun(xdot2_fun, i+1, timestep, "xdot");
-
-        x->data[0][0] = integral(xdot0_f, 0, i);
-        x->data[1][0] = integral(xdot1_f, 0, i);
-        x->data[2][0] = integral(xdot2_f, 0, i);
-
-        //y(t) = I*x(t) = x(t)
-        printf("%.3lf  %.3lf    %.3lf   %.3lf    %.3lf   %.3lf\n",
-                                            t[i],
-                                            u->data[0][0],
-                                            u->data[1][0],
-                                            x->data[0][0],
-                                            x->data[1][0],
-                                            x->data[2][0]
-                                            );
-    }
 }

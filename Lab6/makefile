@@ -17,7 +17,7 @@ OBJ=$(subst .c,.o,$(subst src,objects,$(SRC)))
 all: $(PRJ)
 
 $(PRJ): $(OBJ)
-	$(CC) $^ -o $@ -lm
+	$(CC) $^ -o $@ -lm -pthread
 
 ./objects/%.o: ./src/%.c ./include/%.h
 	$(CC) -c -Wall -Iinclude $< -o $@ 

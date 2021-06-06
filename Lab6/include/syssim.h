@@ -10,11 +10,18 @@ Matrix create_u(int i);
 
 /* Cria um matriz xdot para cada k 
    Executa o produto com a matriz U*/
+//Descontinuada
 Matrix *create_xdot(Matrix *u, double *time);
 
 /* Cria um matriz X para cada k 
    Integra os valores de xdot*/
+//Descontinuada
 Matrix *create_x(Matrix *xdot, double *time);
+
+void *ut();
+void *yt();
+
+void run_multithread_simulation();
 
 void run_simulation();
 
