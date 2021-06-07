@@ -18,9 +18,6 @@ Matrix *create_xdot(Matrix *u, double *time);
 //Descontinuada
 Matrix *create_x(Matrix *xdot, double *time);
 
-void *ut();
-void *yf();
-
 void run_multithread_simulation();
 
 void run_simulation();

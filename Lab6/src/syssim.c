@@ -110,6 +110,7 @@ void run_simulation()
 pthread_mutex_t msglock = PTHREAD_MUTEX_INITIALIZER;
 
 //Variaveis compartilhadas entre as threads
+sem_t S;
 sem_t t1_s;
 sem_t t2_s;
 
@@ -128,6 +129,9 @@ void *ut()
     pthread_mutex_lock(&msglock);
     t = generate_time(timestep, range);
 
+    //Libera thread 2
+    sem_post(&S);
+
     //Primeira matriz do produto de matrizes xdot
     Matrix xdot_a = mat_zeros(3, 2, "xdot_1");
 
@@ -145,7 +149,7 @@ void *ut()
 
     for (int i = 0; t[i - 1] <= 20; i++)
     {
-        //Semaforo 1 -> espera a thread 1 liberar. Ja vem em 1 por padrao
+        //Semaforo 1 -> espera a thread 2 liberar. Ja vem em post por padrao
         sem_wait(&t1_s);
         pthread_mutex_lock(&msglock);
         //Encontra xdot
@@ -179,7 +183,7 @@ void *yf_sim()
 {
     Matrix aux = mat_zeros(3, 3, "aux");
     Matrix yf;
-
+    sem_wait(&S);
     for (int i = 0; t[i - 1] <= 20; i++)
     {
         //Semaforo 2 -> espera thread 1 mandar sinal dentro do loop
