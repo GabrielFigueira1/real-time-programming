@@ -19,7 +19,7 @@ Matrix *create_xdot(Matrix *u, double *time);
 Matrix *create_x(Matrix *xdot, double *time);
 
 void *ut();
-void *yt();
+void *yf();
 
 void run_multithread_simulation();
 
