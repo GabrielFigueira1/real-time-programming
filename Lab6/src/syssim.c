@@ -109,11 +109,12 @@ void run_simulation()
 
 pthread_mutex_t msglock = PTHREAD_MUTEX_INITIALIZER;
 
-//Variaveis compartilhadas entre as threads
+//Semaforos
 sem_t S;
 sem_t t1_s;
 sem_t t2_s;
 
+//Variaveis compartilhadas entre as threads
 Matrix x;
 Matrix u;
 double *t;
@@ -183,10 +184,11 @@ void *yf_sim()
 {
     Matrix aux = mat_zeros(3, 3, "aux");
     Matrix yf;
+    //Semaforo para previnir que o loop sejua executado antes da variavel t ser definida pela thread 1
     sem_wait(&S);
     for (int i = 0; t[i - 1] <= 20; i++)
     {
-        //Semaforo 2 -> espera thread 1 mandar sinal dentro do loop
+        //Semaforo 2 -> espera thread 1 mandar sinal dentro ao encerrar loop
         sem_wait(&t2_s);
         pthread_mutex_lock(&msglock);
         aux->data[0][0] = cos(x->data[2][0]);
