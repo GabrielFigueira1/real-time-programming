@@ -21,7 +21,7 @@ double *generate_time(double timestep, double range)
 Matrix create_u(int i)
 {
     Matrix u = mat_ones(2, 1, "u");
-    if (i <= 100)
+    if (i <= 200)
         u->data[1][0] = 0.2 * M_PI;
     else
         u->data[1][0] = -0.2 * M_PI;
@@ -123,7 +123,7 @@ void *ut()
 {
     //paremetros
     double range = 20;
-    double timestep = 0.1;
+    double timestep = 0.050;
     double sampling_points = range / timestep;
 
     pthread_mutex_lock(&msglock);
