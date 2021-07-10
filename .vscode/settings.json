@@ -6,6 +6,9 @@
         "stdlib.h": "c",
         "typeinfo": "c",
         "integral.h": "c",
-        "stdarg.h": "c"
+        "stdarg.h": "c",
+        "pthread.h": "c",
+        "time.h": "c",
+        "struct_timespec.h": "c"
     }
 }
