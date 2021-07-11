@@ -7,12 +7,12 @@
 */
 void run_simulation();
 /*
-   Thread que calcula a referencia a cada 50ms
+   Thread que mede o tempo a cada 50ms
 */
 void *thr_reference();
 
 /*
-   Thread que calcula Ym e Xm a cada 30ms
+   Thread que calcula Yref e Xref a cada 30ms
 */
 void *thr_ref_model();
 
